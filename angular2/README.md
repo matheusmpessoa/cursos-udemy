@@ -16,7 +16,11 @@ Usado para criar aplicações web e mobile.
 3. node stable
 4. node --version
 
-### Iniciar projeto 'quickstart-angular2
+---
+
+### Quickstart-angular2
+
+Para iniciar projeto, digite:
 ```js
 git clone https://github.com/angular/quickstart angular2-quickstart
 ```
@@ -35,4 +39,38 @@ http://localhost:3000/
 Para:
 ```js
 http://localhost:3001/
+```
+
+---
+
+### Angular-cli (command line interface)
+
+Para iniciar um projeto, digite:
+```js
+npm install -g angular-cli
+```
+
+Para obter a versão utilizada, digite:
+```js
+ng version
+```
+
+Para atualizar o angular-cli, digite:
+```js
+npm uninstall -g angular-cli
+npm cache clean
+npm install -g angular-cli@latest
+```
+
+#### Hello world
+Para gerar uma aplicação, digite:
+```js
+ng new nomedoseuprojeto
+```
+
+Vários arquivos serão criados como estrutura inicial.
+
+Para executar a aplicação digite:
+```js
+ng serve
 ```
