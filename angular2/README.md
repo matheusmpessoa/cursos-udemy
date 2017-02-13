@@ -62,7 +62,9 @@ npm cache clean
 npm install -g angular-cli@latest
 ```
 
-#### Hello world
+---
+
+### Gerador de aplicações Angular2
 Para gerar uma aplicação, digite:
 ```js
 ng new nomedoseuprojeto
