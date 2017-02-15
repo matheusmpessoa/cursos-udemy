@@ -53,27 +53,31 @@ Utiliza caracteres diferentes, contem caracteres unicode.
 ## REST
 Transferencia de Estado Transicional
 
-Tem como origem a tese de um PHD. 
+Tem como origem a tese de um PHD feito por Roy Fielding.
 
 Foram formulados constraints (regras).
 
 Conjunto de regras:
 
 1. Cliente-servidor separando as diferentes formas de um servidor.
+
     Front-end seria o cliente.
     Back-end seria o servidor.
 
     Permite a evolução e escalabilidade destas responsabilidades de forma independente.
 
 2. Stateless
+
     Todas as requisições precisam ser tradadas pelo servidor. Cada requisição não deve ter ligações com requisições anteriores ou futuras.
 
     O servidor deve tratar unicamente.
 
 3. Cache
+
     Permição de cache para evitar um grande uso do servidor.
 
 4. Interface uniforme
+
     Tudo deve ficar no padrão. Deve-se criar uma padronização no sistema.
 
     Elementos devem ser considerados:
@@ -81,11 +85,13 @@ Conjunto de regras:
         - Mensagens autodescritivas
 
 5. Sistema em camadas
+
     A ideia é colocar no meio do caminho elementos que sejam transparentes para seus clientes.
     
     Distribui para cada servidor tal requisição.
     
 6. Código sob-demanda
+
     Única constraint opcional.
     
     A ideia é aumentar a flexibilidade, por exemplo, um código JavaScript que só é baixado quando uma determinada página é carregada. 
@@ -121,27 +127,33 @@ Uma requisição cURL é composta da palavra curl**, da URL a qual você quer ac
 
 ### Comandos de ação do CURL
 * -H 
+
     É um atalho para Header. Essa opção permite adicionaar ou substituir campos do cabeçalho HTTP. 
     ```
     -h "Content-Type: application/json"
     ```
 
 * -d
+
     É um atalho para data. É esta opção que vamos usar quando queremos enviar dados para o servidor. Ex com um payload 
     ```
     JSON: -d'{"name":"Jackson Pires"}'
     ```
 
 * -i
+
     -include quando usamos esta opção, o cURL não mostrará apenas o corpo da resposta enviada do servidor, mas também o cabeçalho/header.
 
 * -I
+
     -head traz apenas o cabeçalho. Esta opção diz ao cURL para fazer uma requisição do tipo HEAD que irá trazer apenas o cabeçalho/header.
 
-* -x
+* -X
+
     -request. Esta opção especifica qual o verbo HTTP que queremos usar. O padrão é o GET mas nós podemos usar também o POST, PUT, PATCH ou delete
 
 * --help
+
     Para pedir ajuda ao curl.
 
 Fake online REST API para teste e prototipação. __[https://jsonplaceholder.typicode.com](https://jsonplaceholder.typicode.com)__
@@ -156,17 +168,19 @@ curl -i http://jsonplaceholder.typicode.com/posts/1
 
 ## Analisando uma resposta HTTP
 1. Start-line (Linha de início / Obrigatória)
+
     Divida em Request-line e Status-line.
 
 2. Header Fields (Linha)
+
     Os header fields representam os metadados da requisição e resposta HTTP. Eles contém informações como a transferência de dados.
     Nesta resposta contém informações como Content-Type, Content-Length e x-powered-by.
-    
     Obs: Quando um header-field possui x na frente o mesmo não é oficial. É possível utilizar mas o mesmo não é oficial. Existem controvérsias sobre esse header-field, o ideal é pesquisar sobre o header para conhecer melhor o que se trata.
 
 3. Empty Line (Linha em branco / Obrigatória)
 
 4. Message-Body (Corpo da mensagem /)
+
     O corpo da mensagem contém os dados que foram enviados do servidor em resposta à requisição feita. Muitas vezes é utilizado o JSON.
     
 Uma outra forma de fazer uma requisição é usando a opção **-v**, que faz com que o resultado seja mais verboso, mostrando de fato como ocorreu a requisição. É utilizado para mostrar mais informações.
@@ -183,6 +197,7 @@ Existem 9 métodos os quais podemos utilizar para a criação de uma API RESTful
 Na especificação original do HTTP existiam apenas 3 métodos (GET, POST, HEAD). Na revisão 1.1 foram adicionados mais 5 verbos (OPTIONS, PUT, DELETE, TRACE E CONNECT). A RFC 5789 estendeu o HTTP com um novo método PATCH.
 
 * GET
+
     O método GET é utilizado quando existe a necessidade de se obter um recurso. Ele é considerado idempotente, ou seja, independente da quantidade de vezes que é executado sob um recurso, o resultado sempre será o mesmo.
     
     ```
@@ -191,6 +206,7 @@ Na especificação original do HTTP existiam apenas 3 métodos (GET, POST, HEAD)
     ```
     
 * POST
+
     Utilizado para a criação de um recurso a partir do uso de uma reprentação.
     
     ```
@@ -204,6 +220,7 @@ Na especificação original do HTTP existiam apenas 3 métodos (GET, POST, HEAD)
     Obs: Para escrever na linha de baixo é so digitar contra-barr: \
 
 * PUT
+
     O método PUT é utilizado como forma de atualizar um determinado recurso.
     
     ```
@@ -213,6 +230,7 @@ Na especificação original do HTTP existiam apenas 3 métodos (GET, POST, HEAD)
     ```
     
 * DELETE
+
     O DELETE tem como finalidade a remoção de um determinado recurso.
 
     ```
@@ -220,15 +238,16 @@ Na especificação original do HTTP existiam apenas 3 métodos (GET, POST, HEAD)
     ```
 
 ## Analogia ao banco de dados
-POST - Create
-GET - Read
-PUT - Update
-DELETE - Delete
+* POST - Create
+* GET - Read
+* PUT - Update
+* DELETE - Delete
 
 
 ## Métodos extras
 
 * HEAD
+
     O método HEAD é muito parecido com o método GET, a única diferença é que o servidor não retornará o "body" depois de receber a requisição.
     
     ```
@@ -236,6 +255,7 @@ DELETE - Delete
     ```
     
 * PATCH
+
     O método PATCH faz "modificações parciais nos recursos", ou seja, fazer a alteração de valores específicos de um recurso, ao invés de enviar todos os dados novamente.
     
     Enquanto o método PUT só permite a "substituição" inteira do recurso, o PATCH permite modificações parciais.
@@ -247,6 +267,7 @@ DELETE - Delete
     ```
     
 * OPTIONS
+
     O OPTIONS pode ser usado para saber quais métodos podem ser aplicados a um determinado recurso, ou qual a URL permitida para se comunicar com um determinado recurso.
         
     ```
@@ -254,6 +275,7 @@ DELETE - Delete
     ```
     
 * TRACE
+
     Ecoa de volta a requisição recebida para que o cliente veja se houveram mudanças e adiçoes feitas por servidores intermediários.
     Muito comum desabilitar esse método por questões de segurança, utilizado normalmente em testes.
     
@@ -263,6 +285,7 @@ DELETE - Delete
     ```
     
 * CONNECT
+
     Converte a requisição de conexão para um túnel TCP/IP transparente, usualmente para facilitar comunicação criptografada com SSL (HTTPS) através de um proxy HTTP não criptografado.
     
 ## Safe Methods
@@ -278,3 +301,89 @@ Idempotência é uma propriedade de algumas operações matemáticas e da ciênc
 Ou seja, o impacto de enviar 10 requisições HTTP para um método idempotente será o mesmo de se enviar apenas uma única requisição.
 
 Os métodos idempotentes são: GET, HEAD, PUT, DELETE, OPTIONS e TRACE.
+
+---
+
+## Modelo de maturidade Richardson
+Apesar de Roy Fielding deixar bastante claro que para uma API ser considerada RESTful ela precisa obrigatoriamente seguir todas as constraints definidas em seu trabalho, na prática, muitas vezes precisamos de uma abordagem um pouco mais simples.
+
+Sendo assim, Leonard Richardson propôs um modelo de 4 níveis para que alcancemos uma API REST.
+
+Os níveis 0, 1 e 2 talvez sejam mais familiares, e de fato são mais fáceis de implementar, porém, deve ficar claro que os mesmos não são considerados RESTful.
+
+![Glorias do REST](https://martinfowler.com/articles/images/richardsonMaturityModel/overview.png)
+
+* Nível 0 - POX
+
+    Neste nível, as mensagens podem ser serializadas em formatos como XML, JSON ou outros. É importante lembrar, como dito anteriormente, que não é o formato da mensagem que define ou não um sistema REST.
+    
+    ```
+    POST /salvarCliente
+    
+    <Cliente>
+    <Nome>Manoel da Silva</Nome>
+    ...
+    </Cliente>
+    ```
+    
+    ```
+    GET /buscarCliente/1
+    
+    HTTP/1.1 200 OK
+
+    <buscarCliente>
+    <status>CLIENTE NÃO ENCONTRADO</STATUS>
+    <codigo>404</codigo>
+    </buscarCliente
+    ```
+    
+    Nesse exemplo apresentado acima, em resumo, significa que não foi utilizado o HTTP da maneira correta.
+    
+* Nível 1 - Recursos
+    
+    No nível 1 é onde dizem que tem recursos. Passa-se a usar recursos como forma de modelar e organizar a API. Neste nível não precisaremos conhecer a funcionalidade de cada método e sim apenas o recurso ao qual temos acesso.
+    
+    ```
+    POST /cliente
+    
+    <Cliente>
+    <Nome>Manoel da Silva</Nome>
+    </Cliente>
+    ```
+    
+* Nível 2 - Verbos HTTP
+
+    O HTTP deixa de ser um papel apenas de transporte e passam a exercer um papel semântico na API, ou seja, seus verbos passam a ser utilizados com o propósito no qual foram criados.
+    
+    Enviando
+    ```
+    POST /cliente
+    
+    <Cliente>
+    <Nome>Manoel da Silva</Nome>
+    ...
+    </Cliente>
+    ```
+    
+    Recebendo
+    ```
+    201 Created
+    
+    Location: /cliente/1
+    ```
+    
+    A utilização dos métodos (GET, POST, PUT, DELETE) começam a ser utilizados.
+    
+    No nível 2 dizem que os verbos HTTP de forma correta.
+    
+    É muito comum a utilização de *HTTP response status code* nesse nível. A documentação do __[MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)__ é separada em categorias diferentes.
+    
+* Nível 3 - HATEOAS
+
+    HATEOAS (Hypermidia as the Engine of Application State).
+    
+    APIs que não utilizam HATEOAS não podem ser consideradas RESTful, mesmo assim, você vai encontrar muitos conteúdos sobre REST que nem ao menos citam essa característica.
+    
+    Apesar de aparentemente ser algo não muito familiar HATEOAS é um conceito presente no dia a dia de todos os usuários da Web.
+    
+    HATEOAS seria um documento mostrar suas possíveis interações com ele mesmo através do corpo da mensagem de retorno de uma requisição.
