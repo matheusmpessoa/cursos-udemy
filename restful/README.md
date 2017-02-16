@@ -123,7 +123,7 @@ REST suporta vários tipos de formato (JSON, XML e YAML). SOAP utiliza somente X
 ## CURL
 cURL é uma ferramenta de linha de comando para pegar ou enviar arquivos usando sintaxe de URL.
 
-Uma requisição cURL é composta da palavra curl**, da URL a qual você quer acessar, e um conjunto de opções que permitem vocÇe modificar qualquer coisa na requisição que será enviada.
+Uma requisição cURL é composta da palavra curl**, da URL a qual você quer acessar, e um conjunto de opções que permitem você modificar qualquer coisa na requisição que será enviada.
 
 ### Comandos de ação do CURL
 * -H 
@@ -374,7 +374,7 @@ Os níveis 0, 1 e 2 talvez sejam mais familiares, e de fato são mais fáceis de
     
     A utilização dos métodos (GET, POST, PUT, DELETE) começam a ser utilizados.
     
-    No nível 2 dizem que os verbos HTTP de forma correta.
+    No nível 2 dizem que os verbos HTTP são utilizados de forma correta.
     
     É muito comum a utilização de *HTTP response status code* nesse nível. A documentação do __[MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)__ é separada em categorias diferentes.
     
@@ -387,3 +387,202 @@ Os níveis 0, 1 e 2 talvez sejam mais familiares, e de fato são mais fáceis de
     Apesar de aparentemente ser algo não muito familiar HATEOAS é um conceito presente no dia a dia de todos os usuários da Web.
     
     HATEOAS seria um documento mostrar suas possíveis interações com ele mesmo através do corpo da mensagem de retorno de uma requisição.
+    
+---
+
+## Outras ferramentas para requisições
+
+Além do CURL existem hoje outras ferramentas como o __[HTTPie](https://httpie.org/)__ e __[Postman](https://www.getpostman.com/)__ para fazer requisições e analisar suas respostas.
+
+* HTTPie
+
+    Sua principal característica é a rapidez. Essa ferramenta possui highlight e identação.
+    
+    Está disponível para download para Windows, Linux e MAC.
+    
+* Postman
+
+    Muito famoso pela qualidade e simplicidade.
+    
+    Está disponível como extensão para o Google Chrome e download para Windows.
+    
+---
+
+## Media Type
+
+Media Types é uma string que define qual o formato do dado e como ele deve ser lido pela máquina. Media type basicamente é utilizado para solicitar ao servidor uma representação específica de uma resposta a uma requisição. Isso permite um computador diferenciar entre JSON e XML, por exemplo.
+
+- application/json
+- application/xml
+- multipart/form-data
+- text/html
+
+Um media type é composto por duas partes separada por uma barra. A primeira parte refere-se ao tipo e a segunda ao subtipo. Também é possível especificar alguns parâmetros adicionais, como por exemplo o *charset=UTF-8*.
+
+A primeira parte contém um tipo registrado de alto nível, que pode ser:
+
+- application
+- audio
+- example
+- image
+- message
+- model
+- multipart
+- text
+- video
+
+Na segunda parte, basta pedir o formato desejado.
+
+Para pedir o formato que você quer na resposta da requisição é necessário configurar no header. Para informar o media type, usamos o header field **accept** no momento da requisição.
+
+```
+curl mockbin.org/request -H "Accept: application/json"
+curl mockbin.org/request -H "Accept: application/xml"
+```
+
+O parâmetro **q** define quality factor, que informa a ordem preferida de retorno da requisição. Esse parâmetro deve estar no intervalo de 0 a 1, sendo 1 o de maior prioridade. Dess
+
+```
+curl mockbin.org/request -H "Accept: application/json;q=0.5, application/yaml;q=0.7"
+```
+
+## Media Type vs Mime Types
+Mime type é chamado atualmente de Media type, é a mesma a coisa, só é um nome utilizado antigamente.
+
+## Content-Type vs Accept
+É muito comum a confusão entre os campos Content-Type e o Accept, mas devemos saber que o Content-Type é o campo que identifica o conteúdo da requisição, ou seja, em uma requisição POST, o formato dos dados envidados deve ser indicado no Content-Type, já o Accept, informa o tipo de retorno ao servidor.
+
+## Tratando erros
+Naturalmente, quando fazemos requições RESTful, receberemos como retorno um possível erro, seja por falha no formato da requisição, seja por causar internas referentes ao servidor. Isso não significa que o retorno apresentado seja uma mensagem clara, que não deixa dúvidas sobre o que aconteceu de fato.
+
+O intuito da gerência de erros em APIs RESTful é informar ao requisitante uma mensagem que retrate o que de fato ocorreu. Mais do que isso, um status code que não seja genérico e sim, útil.
+
+É possível tratar erros atráves das seguintes classes do status code:
+
+1. Informacional
+
+    Códigos começados com 1 são conhecidos como códigos informacionais. A maioria deles não são usados nos dias atuais.
+
+2. Success
+
+    Esses códigos indicam que ouve sucesso no intercâmbio entre o servidor e o cliente.
+
+3. Redirection
+
+    Os códigos indicam que o cliente deve fazer uma ação adicional antes da 
+
+4. Client error
+
+    Nesse caso, o código indica que existe algo errado com a requisição do cliente.
+    
+5. Server error
+
+    O cliente enviou uma requisição válida porém o servidor não foi capaz de processá-la com sucesso.
+    
+Site para consulta de __[status http](https://httpstatuses.com/)__.
+
+Em requisições HTTP o ideal é sempre retornar o status code menos genérico, e se necessário uma message-body com detalhes do erro ocorrido.
+
+---
+
+## Versionamento
+É sempre importante deixar funcionando outras versões de sua API.
+
+Versionamento não faz parte das constraints REST, nem também do Modelo de maturidade Richardson, mas é indispensável para criar APIs que sofrem mudanças ao longo do tempo.
+
+1. Subdomínio
+
+    ```
+    api1.example.com/users
+    ```
+
+2. URL (A mais utilizada por conta de sua fácil implementação)
+
+    ```
+    example.com/v1/users
+    ```
+
+3. URL com parâmetros
+
+    ```
+    example.com/users?v=1
+    ```
+
+4. HTTP Header customizado
+
+    ```
+    X-API-Version: 1
+    ```
+
+5. Accept Header com Media Type customizado
+
+    ```
+    Accept: application/vnd.myapi.v2+json
+    ```
+
+6. Accept Header com opção de versão
+
+    ```
+    Accept: application/vnd.myapi+json;version=2.0
+    ```
+---
+
+## Caching
+Caching é extremamente importante, não só para os usuários, mas também para reduzir o custo de rodar aplicações. Na computação, qualquer valor que é difícil e computacionalmente custoso de obter deve ser cacheado.
+
+As únicas coisas que não devem ser cacheadas são as que mudam com muita frequência.
+
+Esse processo chama-se cache invalidation/invalidação de cache e não é algo simples de se fazer. Cache pode salvar uma enorme quantidade de tempo.
+
+A medida em que diminuímos o tempo de requisição, suas aplicações precisarão de menos poder para rodar e isso implica em gastar menos com servidores. Cache permite uma aplicação escalar mais facilmente, especialmente se a maioria das requisições retornam dados.
+
+Infelizmente nem tudo pode ser cacheado. Alguns dados real-time precisam ser buscados todas as vezes. O restante pode ser cacheado por um período de tempo, seja alguns segundo ou um dia, dependendo da frequência em que os dados mudam.
+
+Mais informações detalhadas podem ser encontradas em __[MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching)__
+
+### Objetivos
+Os objetivos do Caching HTTP são de eliminar o envio de requisições o máximo possível, e caso uma requisição precise ser feita, reduzir os dados de resposta.
+
+O primeiro objetivo pode ser alcançado usando-se um mecanismo de expiração conhecido como Cache-control, e o segundo é através do mecanismo de validação ETag ou Last-Modified.
+
+- Mínimo de requisições: Cache-control
+- Mínimo de dados nas respostas: ETag
+
+### Prevenindo requisições inteiras - Cache-control
+A maneira mais rápida de fazer uma requisição HTTP é não enviá-la inteiramente.
+
+O header Cache-control pode ser usado para definir uma política de cache para um recurso.
+
+Exemplo:
+```
+Cache-control: max-age=3600
+Cache-control: no-cache
+Cache-control: private, max-age=86400
+```
+
+- Max-age: Especifica em segundos quanto tempo o recurso pode ser cacheado. É interessante notar que esse cache também pode ser feito por intermediários, não só o browser em si.
+
+- private/public: Define quem pode fazer o cache. Public significa que qualquer um pode fazer o cache. Private por sua vez indica que o cache só pode ser feito pelo browser, ou seja, os intermediários como os CDNs não podem fazer cache.
+
+- no-chache/no-store: Essas duas diretivas se confundem mas, a no-store informa a resposta não deve ser armazenada seja no browser ou em seus intermediários, já o no-cache significa que a resposta pode ser cacheada mas não pode ser reusada sem antes checar o servidor. Ela pode ser combinada com um ETag.
+
+Mais informações detalhadas podem ser encontradas em __[MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control)__
+
+Para obter um exemplo, digite:
+```
+curl -I http://g1.globo.com/
+```
+
+### ETag
+Até agora foi estudado como prevenir requisições usando o header Cache-control, mas infelizmente na maior parte das APIs web isso é raramente possível.
+
+Uma outra forma de ganhar tempo e largura de banda é usando o header ETag. ETag vem de Entity Tag e destina-se a assegurar um token de validação identificando uma versão específica de uma resposta.
+
+**Exemplo**: Em um primeiro momento um cliente faz a requisição de um recurso (*/users/jackson*), na resposta o servidor inclui o token atual ("*12345*") na header ETag.
+```
+curl http://www.exemple.com/users/jackson
+HTTP/1.1 200 OK
+Content-Length: 2048
+ETag: "12345"
+[DATA]
+```
