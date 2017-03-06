@@ -551,6 +551,8 @@ O primeiro objetivo pode ser alcançado usando-se um mecanismo de expiração co
 ### Prevenindo requisições inteiras - Cache-control
 A maneira mais rápida de fazer uma requisição HTTP é não enviá-la inteiramente.
 
+Para controlar o caching no cliente o mais indicado é usar o header field Cache-control
+
 O header Cache-control pode ser usado para definir uma política de cache para um recurso.
 
 Exemplo:
@@ -585,4 +587,71 @@ HTTP/1.1 200 OK
 Content-Length: 2048
 ETag: "12345"
 [DATA]
+```
+
+Os header fields Etag e If-none-match são combinadas para se fazer cache com ETags.
+
+### Cache com diferentes tipos de reprentação
+
+Utilizar Cache é importante para reduzir o tempo de resposta para os usuários.
+
+Dados real-time são os mais complicados de se fazer Cache.
+
+Para resolver problema de trabalhar com diferentes represenações de chaves, utiliza-se o *vary*.
+
+Mais informações detalhadas podem ser encontradas em __[MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Vary)__
+
+---
+
+### Autenticação
+
+Autenticação é uma parte importante de qualquer aplicação web moderna, ela tem uma missão de identificar quem está usando a aplicação e se ela tem permissão para usá-la.
+
+Muitos sites ainda gerenciam a autenticação através de cookies conforme a __[RFC 6265](https://tools.ietf.org/html/rfc6265)__
+
+Cookies são criados para permitir o servidor gravar e manter os estados (stateful), o que é completamente contrário ao que o REST propõe (stateless), ou seja uma requisição não depende da outra.
+
+O padrão do esquema de autenticação HTTP *basic* e através de *digest* são stateless, mas, atualmente muitas empresas precisam identificar seus usuários e querem diminuir a barreira para que eles usem seus produtos. Isso significa não ficar pedindo a senha do usuário frequentemente, de preferência apenas uma única vez.
+
+Quando uma aplicação web oferece ferramentas para outras aplicações web através de API, a autenticação pode ser feita através de uma *API Key* ou *API secret token* como são conhecidas.
+
+Uma API Key é uma combinação de letras e números bem grande, como um hash, e fica sendo transmitida em todas as requisições para identificar aplicação e geralmente é combinada com um email/senha.
+
+Com estas API Keys trafegam entre o servidor e o cliente, é importante que o servidor tenha configurado os __[certificados SSL](https://letsencrypt.org)__ para garantir a maior segurança possível.
+
+Uma das soluções para login é no momento em que o usuário faz o login, o mesmo recebe um token baseados em suas credenciais e daí pra frente o token servirá de identificação nas proximas requisições. 
+
+### Identificação x Autenticação x Autorização
+Serve apenas para identificar. Pode ocorrer problemas pois é possivel passar API Keys para outras pessoa.
+
+A autenticação se dá quando comprovamos quem somos, usando por exemplo uma combinação de login/senha.
+
+A autorização tem o intuito de definir o que podemos ou não fazer, pois mesmo que o sistema identifique e autentique, as credenciais podem estar permitidas a apenas ler um determinado conteúdo, por exemplo.
+
+### Autenticação com HTTP
+Os mecanismos padrões de autenticação com HTTP são definidos como *basic* (básica) e *digest* (resumida).
+
+Nesses dois mecanismos o conjunto usuario/senha é incluido em cada requisição, codificado em Base64 para a autenticação *Basic* e com um *hash MD5* para a autenticação *Digest*.
+
+A documentação informa que para uma autenticação o cliente deve enviar o header *Authorization* no seguinte formato:
+
+```
+Authorization: auth-scheme hashed-credentials
+```
+
+Requisição de autenticação básica HTTP via curl teríamos:
+```
+curl -u jack:pass http://www.example.com
+```
+
+Em retorno à requisição feita com o header Authorization, caso as credenciais não sejam autorizadas, o servidor deve retornar o status code *401 Unathorized* e setar o header *www-authenticate* com o tipo de autenticação que deve ser usado e qual o domínio (realm).
+```
+www-Authenticate: Basic realm="Perfil"
+```
+
+A diretiva de domínio "realm" é opcional e indica a proteção de um determinado espaço, pois uma mesma aplicação pode-se ter diferentes áreas protegidas usando diferente esquemas de autenticação.
+
+Sendo assim, uma autenticação básica seria:
+```
+Authorization: Basic am9objpwYXNz
 ```
