@@ -1,78 +1,136 @@
-# Curso de Angular 2, TypeScript e Bootstrap4
+# Angular2 e Typescript
+
+## Documentação oficial
+__[https://angular.io/](https://angular.io/)__
+
+__[https://github.com/angular/angular](https://github.com/angular/angular)__
+
+## Características
+* Roda diretamente do servidor
+* Facilidade de SEO
+* Angular CLI
+* Mobile Toolkit
+* Augury
+* Nativescript e Ionic 2
+
+## Benefícios
+* Torna a organização do código de fácil leitura para códigos de grande complexidade, graças aos módulos, namespaces além do forte apoio ao OOP.
+* Devido à sua tipagem estática, o código escrito em TypeScript é mais previsível e é mais fácil de poder depurar o código;
+* Typescript permite que no momento que realiza a etapa de compilação do Javascript que retorna todos os erros antes que eles atinjam em tempo de execução evitando assim “quebrar” o código antes que seja executado;
+
+## Requisitos
+Necessário instalar o __[Node.js](https://nodejs.org/en/)__ e o npm (npm vem instalado com node).
+
+Recomendado instalar o node na raiz de seu disco.
 
 ---
 
-## Angular 2
+# Typescript
+__[Site oficial](https://www.typescriptlang.org/)__
 
-### Características
-Framework do Google que pode ser escrito com TypeScript, Dart ou JavaScript.
+Typescript é um superset de JavaScript que compila para JavaScript puro possibilitando a leitura do js em qualquer navegador.
 
-Usado para criar aplicações web e mobile.
+Tem como grande característica uma forte tipagem, com essa inferência de tipo é possivel reduzir o tempo de compilação.
+
+O mais utilizado atualmente é o ES6.
 
 
-### Atualização do Node
-1. npm cache clean -f
-2. npm install -g n
-3. node stable
-4. node --version
-
----
-
-### Quickstart-angular2
-
-Para iniciar projeto, digite:
+## Instalação
+Digite o seguinte comando para instalar o typescript:
 ```js
-git clone https://github.com/angular/quickstart angular2-quickstart
+npm install -g typescript
 ```
 
-Para executar o projeto:
+Para saber a versão do Typescript
 ```js
-npm start
+tsc -v
 ```
 
-### Acessar Browsersync
-Altere o endereço de:
+
+## Compilação
+Pode ser compilado através de linha de comando, via IDE e editores de texto ou via task runners.
+
+Typescript
 ```js
-http://localhost:3000/
+tsc nomedoarquivo.ts
 ```
 
-Para:
+Node
 ```js
-http://localhost:3001/
+node nomedoarquivo.js
 ```
 
----
 
-### Angular-cli (command line interface)
+## Tipos
+Os tipos declarados no typescript podem ser:
 
-Para iniciar um projeto, digite:
+### String
+É basicamente um texto.
+
 ```js
-npm install -g angular-cli
+var fullname: string = "Matheus Pessoa";
 ```
 
-Para obter a versão utilizada, digite:
+### Number
+Números flutuantes/float
+
 ```js
-ng version
+var age: number = 21;
 ```
 
-Para atualizar o angular-cli, digite:
+### Boolen
+Verifica *true* or *false*
+
 ```js
-npm uninstall -g angular-cli
-npm cache clean
-npm install -g angular-cli@latest
+let isActive: boolean = true;
 ```
 
----
+### Arrays
+Podem ser declarados com a palavra reservada *Array* (com diversas possibilidades de tipagens) ou com colchetes *[]*.
 
-### Gerador de aplicações Angular2
-Para gerar uma aplicação, digite:
 ```js
-ng new nomedoseuprojeto
+var persons: string[] = ['Matheus', 'Luciano'];
 ```
 
-Vários arquivos serão criados como estrutura inicial.
-
-Para executar a aplicação digite:
 ```js
-ng serve
+var persons: Array<string> = ['Matheus', 'Luciano'];
+```
+
+### Enum
+Ideal para trabalhar com listas, ele nada mais é que um objeto, mas com a chave dos elementos definida de forma mais amigável.
+
+```js
+enum Color {Red=1, Green, Blue};
+var c: Color = Color.Green;
+
+console.log(c);
+```
+
+### Any
+Ignora os tipos declarados, aceita qualquer coisa.
+
+O tipo any é ideal para transpor um JavaScript existente para TypeScript evitando se preocupar com os erros na compilação, fazendo isso de forma gradual.
+
+```js
+var notSure: any = 4;
+notSure = "maybe a string";
+notSure = false; // ok é um boolean
+```
+
+### Void
+Contrário do any, muito usado em funções, para informar que ela não retorna nada.
+
+```js
+function warnUser(): void {
+    alert("Mensagem de aviso");
+}
+```
+
+### Retorno de dados
+Pode informar um tipo para o retorno de funções, isso pode ser feito com qualquer um dos data types informados aqui.
+
+```js
+function isChecked(): boolean {
+    return true;
+}
 ```
