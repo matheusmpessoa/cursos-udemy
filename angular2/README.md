@@ -134,3 +134,105 @@ function isChecked(): boolean {
     return true;
 }
 ```
+
+
+## Configuração do projeto TypeScript para o VSCode
+Criar um arquivo com o nome de *tsconfig.json* - tsconfig tem mais opções de configuração em sua documentação
+
+```js
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "sourceMap": true
+    }
+}
+```
+
+Task gerada a partir do command pallet do VSCode
+1. Generate task runner
+2. Selecione a opção *Typescript - tsconfig.json*
+
+
+### Ocultar arquivos
+1. Preferences > Workspace settings
+2. Será aberto um arquivo json para configurar - será gerado um arquivo *settings.json* sempre configurar o settings e nunca o default.
+3. Escreva o comando *"files.exclude"* para configurar a task.
+
+Exemplo:
+```js
+{
+    "editor.wordWrap": "on",
+    "window.zoomLevel": 0,
+    "workbench.iconTheme": "vs-seti",
+    "editor.renderIndentGuides": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.js.map": true
+    }
+}
+```
+
+### Arquivo .map
+O arquivo *.map* possui informações do debug, caso tenha algum erro, o erro estará indicado nesse arquivo.
+
+
+## Classes
+Para criar uma classe é necessário declarar apenas o seu nome.
+
+Exemplo de uma classe typescript
+```js
+export class Animal {
+
+    private nome: string;
+
+    constructor(nome: string) {
+        this.nome = nome;
+    }
+}
+```
+
+Foi declarado uma classe *Animal*, com um atributo *nome*, um método construtor e o método nome que retorna uma string.
+
+O *export* é necessário ser declarado junto da classe para definir o nível de seus acessos.
+
+O private define o acesso da variável *nome*. O *constructor* cria o método *nome*.
+
+Exemplo de um arquivo typescript que esta sendo criado para executar e passar via parâmetro para a classe animal.
+```js
+import {Animal} from './animal';
+
+let a = new Animal('Bixano');
+```
+
+
+## Herança
+A herança no *typescript* é definida com a palavra reservada *extends*. Ao declarar *extends*, a classe *Animal* tem métodos e atributos herdados de uma classe para outra.
+
+Se um método da classe pai for subscrito na classe filha, você pode chamar o método da classe pai usando *super*.
+
+```js
+import {Animal} from "./animal";
+
+export class Cavalo extends Animal {
+
+    constructor (nome: string) {
+        super(nome);
+    }
+
+    public mover(distanciaEmMetros: number): void {
+        console.log("Galopando...");
+        super.mover(distanciaEmMetros);
+    }
+}
+```
+
+## Interface
+Uma interface também define a estrutura das classes que a implementam, mas a diferença em relação às Classes Abstratas é que todos os métodos e atributos devem ser implementados de alguma forma.

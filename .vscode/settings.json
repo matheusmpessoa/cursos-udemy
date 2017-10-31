@@ -1,0 +1,17 @@
+{
+    "editor.wordWrap": "on",
+    "window.zoomLevel": 0,
+    "workbench.iconTheme": "vs-seti",
+    "editor.renderIndentGuides": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.js.map": true
+    }
+}
