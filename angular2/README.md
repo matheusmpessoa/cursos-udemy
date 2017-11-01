@@ -86,7 +86,7 @@ let isActive: boolean = true;
 ```
 
 ### Arrays
-Podem ser declarados com a palavra reservada *Array* (com diversas possibilidades de tipagens) ou com colchetes *[]*.
+Podem ser declarados com a palavra reservada *Array* (com diversas possibilidades de tipagens) ou com colchetes *[ ]*.
 
 ```js
 var persons: string[] = ['Matheus', 'Luciano'];
@@ -236,3 +236,45 @@ export class Cavalo extends Animal {
 
 ## Interface
 Uma interface também define a estrutura das classes que a implementam, mas a diferença em relação às Classes Abstratas é que todos os métodos e atributos devem ser implementados de alguma forma.
+
+Declaração de uma interface
+```js
+export interface DaoInterface {
+    tableName: string;
+
+    insert(object: any): boolean;
+    update(object: any): boolean;
+    delete(id: number): any;
+    find(id: number): any;
+    findAll(): [any];
+}
+```
+
+## Generics
+Utilizado para tornar um componente, uma classe ou um método reutilizável, possibilitando de trabalhar uma mesma classe com uma variedade de tipos.
+
+Para indicar que um *generics* será criado/utlizado é necessário declarar o tipo entre *< >*
+
+```js
+export interface DaoInterface<T> {
+    tableName: string;
+
+    insert(object: T): boolean;
+    update(object: T): boolean;
+    delete(id: number): T;
+    find(id: number): T;
+    findAll(): [T];
+}
+```
+
+O *T* é um tipo. Foi passado poderia ser qualquer tipo; carro, animal, pessoa, etc.
+
+
+### Classe generics
+A classe precisa ser declarada como *generics*, para isso basta passar o tipo.
+
+```js
+export class Dao<T> implements DaoInterface<T> {
+
+}
+```
